@@ -5,7 +5,7 @@ dotnet ef
 @REM Checando se o comando anterior rodou sem erros.
 set erros= %errorlevel%
 IF %erros%==0 (
-	dotnet fsi EtlLocadora.Data/scaffold_config.fsx
+	dotnet fsi EtlVendasProva.Data/scaffold_config.fsx
 )
 
 IF NOT %erros%==0 (

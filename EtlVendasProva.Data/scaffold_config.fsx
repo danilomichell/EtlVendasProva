@@ -6,16 +6,30 @@ open System.IO
 // aqui ficam as tabelas que vão gerar classes no projeto
 let tabelas =
     [
+        "DW_LOCADORA.FT_LOCACOES"
+        "DW_LOCADORA.DM_ARTISTA"
+        "DW_LOCADORA.DM_GRAVADORA"
+        "DW_LOCADORA.DM_SOCIO"
+        "DW_LOCADORA.DM_TEMPO"
+        "DW_LOCADORA.DM_TITULO"
+        "LOCADORA.GRAVADORAS"
+        "LOCADORA.COPIAS"
+        "LOCADORA.ARTISTAS"
+        "LOCADORA.ITENS_LOCACOES"
+        "LOCADORA.LOCACOES"
+        "LOCADORA.SOCIOS"
+        "LOCADORA.TIPOS_SOCIOS"
+        "LOCADORA.TITULOS"
     ]
 
-let caminho_appsettings = "EtlVendas.Processamento/appsettings.json"
-let projeto_do_contexto = "EtlVendas.Data"
+let caminho_appsettings = "EtlVendasProva.Processamento/appsettings.json"
+let projeto_do_contexto = "EtlVendasProva.Data"
 let nome_do_contexto = "VendasContext"
 let diretorio_do_contexto = "Context"
-let diretorio_das_entidades = "..\EtlVendas.Data\Domain\Entities\Relacional"
-let projeto_das_entidades = "EtlVendas.Data"
+let diretorio_das_entidades = "..\EtlVendasProva.Data\Domain\Entities\Dw"
+let projeto_das_entidades = "EtlVendasProva.Data"
 let caminho_string_conexao = "$.ConnectionStrings.VendasContext" 
-let driver_banco_de_dados = "Oracle.EntityFrameworkCore"
+let driver_banco_de_dados = "Npgsql.EntityFrameworkCore.PostgreSQL"
 
 // Comandos do terminal
 let restore = "dotnet restore"
@@ -29,7 +43,7 @@ let scaffold_str connection_string table_list =
     let table_str = table_list |> List.map(fun table -> " -t " + table) |> String.concat ""
     [ 
         "dotnet ef dbcontext scaffold \"" + connection_string + "\""
-        "Oracle.EntityFrameworkCore"
+        driver_banco_de_dados
         "-v"
         "-f"
         "--context-dir " + diretorio_do_contexto
