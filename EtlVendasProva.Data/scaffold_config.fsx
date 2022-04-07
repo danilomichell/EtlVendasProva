@@ -24,11 +24,11 @@ let tabelas =
 
 let caminho_appsettings = "EtlVendasProva.Processamento/appsettings.json"
 let projeto_do_contexto = "EtlVendasProva.Data"
-let nome_do_contexto = "VendasContext"
+let nome_do_contexto = "VendasDwContext"
 let diretorio_do_contexto = "Context"
 let diretorio_das_entidades = "..\EtlVendasProva.Data\Domain\Entities\Dw"
 let projeto_das_entidades = "EtlVendasProva.Data"
-let caminho_string_conexao = "$.ConnectionStrings.VendasContext" 
+let caminho_string_conexao = "$.ConnectionStrings.VendasDwContext" 
 let driver_banco_de_dados = "Npgsql.EntityFrameworkCore.PostgreSQL"
 
 // Comandos do terminal

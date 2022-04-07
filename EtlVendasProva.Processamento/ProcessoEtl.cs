@@ -1,5 +1,6 @@
 ﻿using System.Data;
 using EtlVendasProva.Data.Context;
+using EtlVendasProva.Processamento.Etl;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -30,7 +31,7 @@ namespace EtlVendasProva.Processamento
 
         private void ProcessarEtl()
         {
-            //var extracao = new Extract(_context);
+            var extracao = new Extract(_context);
 
             //var trasformacao = new Transform(extracao);
 

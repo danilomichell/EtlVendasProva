@@ -39,11 +39,11 @@ namespace EtlVendasProva.Processamento
         private static void SetDbContexts(IServiceCollection serviceCollection, IConfiguration configuration)
         {
 
-            var connectionLocadora = configuration.GetConnectionString("LocadoraContext");
-            serviceCollection.AddDbContextPool<VendasContext>(opts => opts.UseNpgsql(connectionLocadora));
+            var connectionVendas = configuration.GetConnectionString("VendasContext");
+            serviceCollection.AddDbContextPool<VendasContext>(opts => opts.UseNpgsql(connectionVendas));
 
-            var connectionLocadoraDw = configuration.GetConnectionString("LocadoraDwContext");
-            serviceCollection.AddDbContextPool<VendasDwContext>(opts => opts.UseNpgsql(connectionLocadoraDw));
+            var connectionVendasDw = configuration.GetConnectionString("VendasDwContext");
+            serviceCollection.AddDbContextPool<VendasDwContext>(opts => opts.UseNpgsql(connectionVendasDw));
         }
 
         private static void SetScopedServices(IServiceCollection serviceCollection)
