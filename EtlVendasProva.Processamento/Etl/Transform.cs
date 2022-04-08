@@ -20,7 +20,7 @@ namespace EtlVendasProva.Processamento.Etl
             TransformarClientes(extracao.Clientes);
             TransformarVendedor(extracao.Vendedores);
             TransformarProdutos(extracao.Produtos);
-            //            TransformarGravadoras(extracao.Gravadoras);
+            TransformarFtVendas(extracao.Vendas);
         }
 
         private void TransformarTempo(List<DateOnly> tempo)
@@ -116,9 +116,9 @@ namespace EtlVendasProva.Processamento.Etl
                               $" - Tempo de transformação: {sw.Elapsed.TotalSeconds} segundos.");
         }
 
-        private void TransformarFtLocacoes(List<Vendas> vendas)
+        private void TransformarFtVendas(List<Vendas> vendas)
         {
-            Console.WriteLine("Iniciando transformação das Locações");
+            Console.WriteLine("Iniciando transformação das vendas");
             var sw = new Stopwatch();
             sw.Start();
 
@@ -142,7 +142,7 @@ namespace EtlVendasProva.Processamento.Etl
 
             sw.Stop();
 
-            Console.WriteLine($"Finalizando transformação das Locações" +
+            Console.WriteLine($"Finalizando transformação das vendas" +
                               $" - Tempo de transformação: {sw.Elapsed.TotalSeconds} segundos.");
         }
 

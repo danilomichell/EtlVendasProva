@@ -46,15 +46,13 @@ namespace EtlVendasProva.Processamento
 
             Truncate(TableName(_dwContext.FtVendas));
 
-            //Truncate(TableName(_dwContext.DmArtista));
+            Truncate(TableName(_dwContext.DmProduto));
 
-            //Truncate(TableName(_dwContext.DmGravadora));
+            Truncate(TableName(_dwContext.DmVendedor));
 
-            //Truncate(TableName(_dwContext.DmSocio));
+            Truncate(TableName(_dwContext.DmClientes));
 
             Truncate(TableName(_dwContext.DmTempo));
-
-            //Truncate(TableName(_dwContext.DmTitulo));
         }
 
         private void Truncate(string tableName)

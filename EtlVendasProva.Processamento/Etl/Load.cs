@@ -15,7 +15,7 @@ namespace EtlVendasProva.Processamento.Etl
             CarregarDmClientes(transform.DmClientes, context);
             CarregarDmProduto(transform.DmProduto, context);
             CarregarDmVendedor(transform.DmVendedor, context);
-            //            CarregarDmTitulo(transform.DmTitulos, context);
+            CarregaFtVendas(transform.FtVendas, context);
         }
 
         public void CarregarDmTempo(List<DmTempo> tempos, VendasDwContext context)
@@ -126,24 +126,25 @@ namespace EtlVendasProva.Processamento.Etl
             Console.WriteLine($"Finalizando carga dos vendedores" +
                               $" - Tempo de carga: {sw.Elapsed.TotalSeconds} segundos.");
         }
-        
 
-        //        public void CarregaFtLocacoes(List<FtLocacoes> ftLocacoes, LocadoraDwContext context)
-        //        {
-        //            var sw = new Stopwatch();
-        //            sw.Start();
-        //            var valores = context.FtLocacoes.ToList();
-        //            if (valores.Count != 0)
-        //            {
-        //                context.RemoveRange(valores);
-        //                context.SaveChanges();
-        //            }
-        //            context.FtLocacoes.AddRange(ftLocacoes);
-        //            context.SaveChanges();
-        //            sw.Stop();
-        //            Console.WriteLine($"Finalizando carga das locações" +
-        //                              $" - Tempo de carga: {sw.Elapsed.TotalSeconds} segundos.");
-        //        }
+
+        public void CarregaFtVendas(List<FtVendas> ftVendas, VendasDwContext context)
+        {
+            Console.WriteLine("Iniciando cargda dos Vendas");
+            var sw = new Stopwatch();
+            sw.Start();
+            var valores = context.FtVendas.ToList();
+            if (valores.Count != 0)
+            {
+                context.RemoveRange(valores);
+                context.SaveChanges();
+            }
+            context.FtVendas.AddRange(ftVendas);
+            context.SaveChanges();
+            sw.Stop();
+            Console.WriteLine($"Finalizando carga das Vendas" +
+                              $" - Tempo de carga: {sw.Elapsed.TotalSeconds} segundos.");
+        }
     }
 }
 
