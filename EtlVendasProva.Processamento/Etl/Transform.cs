@@ -130,7 +130,7 @@ namespace EtlVendasProva.Processamento.Etl
                     {
                         IdVendedor = venda.Idvendedor,
                         IdProduto = item.Idproduto,
-                        IdCliente = venda.Idcliente,
+                        IdCliente = venda.IdclienteNavigation.Idcliente,
                         IdTempo = venda.Data.Year * 10000 + venda.Data.Month * 100 + venda.Data.Day,
                         DescontoTotal = venda.Itensvenda.Sum(x => x.Desconto),
                         ValTotalVenda = venda.Itensvenda.Sum(x => x.Valortotal),

@@ -9,16 +9,14 @@ namespace EtlVendasProva.Data.Context
     public partial class VendasDwContext : DbContext
     {
         public VendasDwContext(DbContextOptions<VendasDwContext> options)
-            : base(options)
+               : base(options)
         {
         }
-
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
-
         public virtual DbSet<DmClientes> DmClientes { get; set; } = null!;
         public virtual DbSet<DmProduto> DmProduto { get; set; } = null!;
         public virtual DbSet<DmTempo> DmTempo { get; set; } = null!;
@@ -129,25 +127,24 @@ namespace EtlVendasProva.Data.Context
 
             modelBuilder.Entity<FtVendas>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => new { e.IdCliente, e.IdVendedor, e.IdTempo, e.IdProduto })
+                    .HasName("ft_vendas_pkey");
 
                 entity.ToTable("ft_vendas", "dimensional");
+
+                entity.Property(e => e.IdCliente).HasColumnName("id_cliente");
+
+                entity.Property(e => e.IdVendedor).HasColumnName("id_vendedor");
+
+                entity.Property(e => e.IdTempo).HasColumnName("id_tempo");
+
+                entity.Property(e => e.IdProduto).HasColumnName("id_produto");
 
                 entity.Property(e => e.DescontoTotal)
                     .HasPrecision(10, 2)
                     .HasColumnName("desconto_total");
 
-                entity.Property(e => e.IdCliente).HasColumnName("id_cliente");
-
-                entity.Property(e => e.IdProduto).HasColumnName("id_produto");
-
-                entity.Property(e => e.IdTempo).HasColumnName("id_tempo");
-
-                entity.Property(e => e.IdVendedor).HasColumnName("id_vendedor");
-
                 entity.Property(e => e.QtdVendasRealizadas).HasColumnName("qtd_vendas_realizadas");
-
-                entity.Property(e => e.Quantidade).HasColumnName("quantidade");
 
                 entity.Property(e => e.ValTotalVenda)
                     .HasPrecision(10, 2)
@@ -158,25 +155,25 @@ namespace EtlVendasProva.Data.Context
                     .HasColumnName("val_unitario_produto");
 
                 entity.HasOne(d => d.IdClienteNavigation)
-                    .WithMany()
+                    .WithMany(p => p.FtVendas)
                     .HasForeignKey(d => d.IdCliente)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("fk_id_cliente");
 
                 entity.HasOne(d => d.IdProdutoNavigation)
-                    .WithMany()
+                    .WithMany(p => p.FtVendas)
                     .HasForeignKey(d => d.IdProduto)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("fk_id_produto");
 
                 entity.HasOne(d => d.IdTempoNavigation)
-                    .WithMany()
+                    .WithMany(p => p.FtVendas)
                     .HasForeignKey(d => d.IdTempo)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("fk_id_tempo");
 
                 entity.HasOne(d => d.IdVendedorNavigation)
-                    .WithMany()
+                    .WithMany(p => p.FtVendas)
                     .HasForeignKey(d => d.IdVendedor)
                     .OnDelete(DeleteBehavior.Restrict)
                     .HasConstraintName("fk_id_vendedor");

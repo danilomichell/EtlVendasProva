@@ -19,6 +19,7 @@ namespace EtlVendasProva.Processamento.Etl
             ExtrairCliente(context);
             ExtrairProdutos(context);
             ExtrairVendedores(context);
+            ExtrairVendas(context);
         }
 
         private void ExtrairTempo(VendasContext context)
