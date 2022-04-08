@@ -33,9 +33,9 @@ namespace EtlVendasProva.Processamento
         {
             var extracao = new Extract(_context);
 
-            //var trasformacao = new Transform(extracao);
+            var trasformacao = new Transform(extracao);
 
-            //_ = new Load(trasformacao, _dwContext);
+            _ = new Load(trasformacao, _dwContext);
 
             Console.WriteLine("Finalizado o ETL");
         }
@@ -44,7 +44,7 @@ namespace EtlVendasProva.Processamento
         private void Exclude()
         {
 
-            //Truncate(TableName(_dwContext.FtLocacoes));
+            Truncate(TableName(_dwContext.FtVendas));
 
             //Truncate(TableName(_dwContext.DmArtista));
 
@@ -52,7 +52,7 @@ namespace EtlVendasProva.Processamento
 
             //Truncate(TableName(_dwContext.DmSocio));
 
-            //Truncate(TableName(_dwContext.DmTempo));
+            Truncate(TableName(_dwContext.DmTempo));
 
             //Truncate(TableName(_dwContext.DmTitulo));
         }

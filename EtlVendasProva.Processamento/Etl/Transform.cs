@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using EtlVendasProva.Data.Domain.Entities.Dw;
+using EtlVendasProva.Data.Domain.Entities.Relacional;
 using EtlVendasProva.Processamento.Etl;
 
 namespace EtlVendasProva.Processamento.Etl
@@ -7,23 +8,22 @@ namespace EtlVendasProva.Processamento.Etl
     public class Transform
     {
         public List<DmTempo> DmTempo { get; private set; } = new();
-        //        public List<DmSocio> DmSocios { get; private set; } = new();
-        //        public List<DmTitulo> DmTitulos { get; private set; } = new();
-        //        public List<DmArtista> DmArtistas { get; private set; } = new();
-        //        public List<DmGravadora> DmGravadoras { get; private set; } = new();
-        //        public List<FtLocacoes> FtLocacoes { get; private set; } = new();
+        public List<DmClientes> DmClientes { get; private set; } = new();
+        public List<DmProduto> DmProduto { get; private set; } = new();
+
+        public List<DmVendedor> DmVendedor { get; private set; } = new();
+        public List<FtVendas> FtVendas { get; private set; } = new();
 
         public Transform(Extract extracao)
         {
             TransformarTempo(extracao.Tempo);
-            //            TransformarSocios(extracao.Socios);
-            //            TransformarTitulos(extracao.Titulos);
-            //            TransformarArtistas(extracao.Artistas);
+            TransformarClientes(extracao.Clientes);
+            TransformarVendedor(extracao.Vendedores);
+            TransformarProdutos(extracao.Produtos);
             //            TransformarGravadoras(extracao.Gravadoras);
-            //            TransformarFtLocacoes(extracao.Locacoes);
         }
 
-        private void TransformarTempo(List<DateTime> tempo)
+        private void TransformarTempo(List<DateOnly> tempo)
         {
             Console.WriteLine("Iniciando transformação do tempo");
             var sw = new Stopwatch();
@@ -32,145 +32,119 @@ namespace EtlVendasProva.Processamento.Etl
             {
                 DmTempo.Add(new DmTempo
                 {
-                    IdTempo = item.Year * 100 + item.Month,
+                    IdTempo = item.Year * 10000 + item.Month * 100 + item.Day,
                     DataVenda = item,
                     NmMes = NomeMes(item.Month),
                     NuMes = item.Month,
                     SgMes = NomeMes(item.Month)[..3],
-                    Trimestre = item.Month <= 3 ? "Primeiro" : item.Month <= 6 ? "Segundo" : item.Month <= 9 ? "Terceiro" : "Quarto"
+                    Trimestre = item.Month <= 3 ? "Primeiro" :
+                        item.Month <= 6 ? "Segundo" :
+                        item.Month <= 9 ? "Terceiro" : "Quarto"
                 });
             }
+
             sw.Stop();
 
             Console.WriteLine($"Finalizando transformação do tempo" +
                               $" - Tempo de transformação: {sw.Elapsed.TotalSeconds} segundos.");
 
         }
-        //        private void TransformarSocios(List<Socios> socios)
-        //        {
-        //            Console.WriteLine("Iniciando transformação dos Socios");
-        //            var sw = new Stopwatch();
-        //            sw.Start();
-        //            foreach (var item in socios)
-        //            {
-        //                DmSocios.Add(new DmSocio
-        //                {
-        //                    IdSoc = item.CodSoc,
-        //                    NomSoc = item.NomSoc,
-        //                    TipoSocio = item.StaSoc
-        //                });
-        //            }
-        //            sw.Stop();
 
-        //            Console.WriteLine($"Finalizando transformação dos Socios" +
-        //                              $" - Tempo de transformação: {sw.Elapsed.TotalSeconds} segundos.");
-        //        }
-        //        private void TransformarTitulos(List<Titulos> titulos)
-        //        {
-        //            Console.WriteLine("Iniciando transformação dos Titulos");
-        //            var sw = new Stopwatch();
-        //            sw.Start();
-        //            foreach (var item in titulos)
-        //            {
-        //                DmTitulos.Add(new DmTitulo
-        //                {
-        //                    IdTitulo = item.CodTit,
-        //                    TpoTitulo = item.TpoTit,
-        //                    DscTitulo = item.DscTit,
-        //                    ClaTitulo = item.ClaTit
-        //                });
-        //            }
-        //            sw.Stop();
+        private void TransformarClientes(List<Clientes> clientes)
+        {
+            Console.WriteLine("Iniciando transformação dos clientes");
+            var sw = new Stopwatch();
+            sw.Start();
+            foreach (var item in clientes)
+            {
+                DmClientes.Add(new DmClientes()
+                {
+                    IdCliente = item.Idcliente,
+                    NomeCliente = item.Cliente,
+                    EstadoCliente = item.Estado,
+                    SexoCliente = item.Sexo,
+                    ClasseCliente = item.Status
+                });
+            }
 
-        //            Console.WriteLine($"Finalizando transformação dos Titulos" +
-        //                              $" - Tempo de transformação: {sw.Elapsed.TotalSeconds} segundos.");
-        //        }
-        //        private void TransformarArtistas(List<Artistas> artistas)
-        //        {
-        //            Console.WriteLine("Iniciando transformação dos Artistas");
-        //            var sw = new Stopwatch();
-        //            sw.Start();
-        //            foreach (var item in artistas)
-        //            {
-        //                DmArtistas.Add(new DmArtista
-        //                {
-        //                    IdArt = item.CodArt,
-        //                    NacBras = item.NacBras,
-        //                    NomArt = item.NomArt,
-        //                    TpoArt = item.TpoArt
-        //                });
-        //            }
-        //            sw.Stop();
+            sw.Stop();
 
-        //            Console.WriteLine($"Finalizando transformação dos Artistas" +
-        //                              $" - Tempo de transformação: {sw.Elapsed.TotalSeconds} segundos.");
-        //        }
-        //        private void TransformarGravadoras(List<Gravadoras> gravadoras)
-        //        {
-        //            Console.WriteLine("Iniciando transformação das Gravadoras");
-        //            var sw = new Stopwatch();
-        //            sw.Start();
-        //            foreach (var item in gravadoras)
-        //            {
-        //                DmGravadoras.Add(new DmGravadora
-        //                {
-        //                    IdGrav = item.CodGrav,
-        //                    NomGrav = item.NomGrav,
-        //                    UfGrav = item.UfGrav,
-        //                    NacBras = item.NacBras
-        //                });
-        //            }
-        //            sw.Stop();
+            Console.WriteLine($"Finalizando transformação dos clientes" +
+                              $" - Tempo de transformação: {sw.Elapsed.TotalSeconds} segundos.");
+        }
 
-        //            Console.WriteLine($"Finalizando transformação das Gravadoras" +
-        //                              $" - Tempo de transformação: {sw.Elapsed.TotalSeconds} segundos.");
-        //        }
+        private void TransformarProdutos(List<Produtos> produtos)
+        {
+            Console.WriteLine("Iniciando transformação dos produtos");
+            var sw = new Stopwatch();
+            sw.Start();
+            foreach (var item in produtos)
+            {
+                DmProduto.Add(new DmProduto
+                {
+                    IdProduto = item.Idproduto,
+                    NomeProduto = item.Produto,
+                    PrecoProduto = item.Preco,
+                    ClasseProduto = item.Preco < 500 ? "Popular" : item.Preco < 3000 ? "Media" : "Alta"
+                });
+            }
 
-        //        private void TransformarFtLocacoes(List<Locacoes> locacoes)
-        //        {
-        //            Console.WriteLine("Iniciando transformação das Locações");
-        //            var sw = new Stopwatch();
-        //            sw.Start();
+            sw.Stop();
 
-        //            foreach (var locacao in locacoes)
-        //            {
-        //                foreach (var item in locacao.ItensLocacoes)
-        //                {
-        //                    var ftLocacao = new FtLocacoes
-        //                    {
-        //                        IdGrav = item.Copias.CodTitNavigation.CodGrav,
-        //                        IdArt = item.Copias.CodTitNavigation.CodArt,
-        //                        IdSoc = locacao.CodSoc,
-        //                        IdTitulo = item.Copias.CodTit,
-        //                        IdTempo = locacao.DatLoc.Year * 100 + locacao.DatLoc.Month,
-        //                        ValorArrecadado = locacao.ItensLocacoes.Sum(x => x.ValLoc),
-        //                        TempoDevolucao = locacao.StaPgto is "P" ? 0.0M : Math.Round((decimal)Math.Abs(DateTime.Now.Subtract(locacao.DatVenc).TotalDays)),
-        //                        MultaAtraso = locacao.StaPgto is "P" ? 0.0M : CalcularTempAtraso(locacao)
-        //                    };
-        //                    FtLocacoes.Add(ftLocacao);
-        //                }
-        //            }
+            Console.WriteLine($"Finalizando transformação dos produtos" +
+                              $" - Tempo de transformação: {sw.Elapsed.TotalSeconds} segundos.");
+        }
 
-        //            sw.Stop();
+        private void TransformarVendedor(List<Vendedores> vendedores)
+        {
+            Console.WriteLine("Iniciando transformação dos vendedores");
+            var sw = new Stopwatch();
+            sw.Start();
+            foreach (var item in vendedores)
+            {
+                DmVendedor.Add(new DmVendedor
+                {
+                    IdVendedor = item.Idvendedor,
+                    NomeVendedor = item.Nome,
+                    NivelVendedor = VendasTotais(item.Vendas.ToList())
+                });
+            }
 
-        //            Console.WriteLine($"Finalizando transformação das Locações" +
-        //                              $" - Tempo de transformação: {sw.Elapsed.TotalSeconds} segundos.");
-        //        }
+            sw.Stop();
 
-        //        private decimal CalcularTempAtraso(Locacoes locacao)
-        //        {
-        //            var tempoAtrasado = Math.Abs(DateTime.Now.Subtract(locacao.DatVenc).TotalDays);
+            Console.WriteLine($"Finalizando transformação dos vendedores" +
+                              $" - Tempo de transformação: {sw.Elapsed.TotalSeconds} segundos.");
+        }
 
-        //            decimal valorMulta = locacao.ValLoc;
+        private void TransformarFtLocacoes(List<Vendas> vendas)
+        {
+            Console.WriteLine("Iniciando transformação das Locações");
+            var sw = new Stopwatch();
+            sw.Start();
 
-        //            if (tempoAtrasado > 1)
-        //            {
-        //                tempoAtrasado -= 1;
+            foreach (var venda in vendas)
+            {
+                foreach (var item in venda.Itensvenda)
+                {
+                    FtVendas.Add(new FtVendas
+                    {
+                        IdVendedor = venda.Idvendedor,
+                        IdProduto = item.Idproduto,
+                        IdCliente = venda.Idcliente,
+                        IdTempo = venda.Data.Year * 10000 + venda.Data.Month * 100 + venda.Data.Day,
+                        DescontoTotal = venda.Itensvenda.Sum(x => x.Desconto),
+                        ValTotalVenda = venda.Itensvenda.Sum(x => x.Valortotal),
+                        ValUnitarioProduto = item.Valorunitario,
+                        QtdVendasRealizadas = venda.Itensvenda.Sum(x => x.Quantidade)
+                    });
+                }
+            }
 
-        //                valorMulta += Convert.ToDecimal(tempoAtrasado * Convert.ToDouble(locacao.ValLoc * 0.40M));
-        //            }
-        //            return Math.Round(valorMulta, 2);
-        //        }
+            sw.Stop();
+
+            Console.WriteLine($"Finalizando transformação das Locações" +
+                              $" - Tempo de transformação: {sw.Elapsed.TotalSeconds} segundos.");
+        }
 
         private string NomeMes(int mes)
         {
@@ -190,5 +164,17 @@ namespace EtlVendasProva.Processamento.Etl
                 _ => "Dezembro",
             };
         }
+
+        public string VendasTotais(List<Vendas> vendas)
+        {
+            var vendasTotais = vendas.Sum(x => x.Total);
+            return vendasTotais switch
+            {
+                <= 199000 => "Nivel 1",
+                <= 299000 => "Nivel 2",
+                _ => "Nivel 2"
+            };
+        }
     }
 }
+

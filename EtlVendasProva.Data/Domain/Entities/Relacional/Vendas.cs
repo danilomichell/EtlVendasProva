@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+#nullable disable
 namespace EtlVendasProva.Data.Domain.Entities.Relacional
 {
     public partial class Vendas
@@ -13,7 +13,7 @@ namespace EtlVendasProva.Data.Domain.Entities.Relacional
         public int Idvenda { get; set; }
         public int Idvendedor { get; set; }
         public int Idcliente { get; set; }
-        public DateTime Data { get; set; }
+        public DateOnly Data { get; set; }
         public decimal Total { get; set; }
 
         public virtual Clientes IdclienteNavigation { get; set; }

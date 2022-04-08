@@ -7,7 +7,7 @@ namespace EtlVendasProva.Data.Domain.Entities.Relacional
     {
         public int Idproduto { get; set; }
         public int Idvenda { get; set; }
-        public int? Quantidade { get; set; }
+        public int Quantidade { get; set; }
         public decimal? Valorunitario { get; set; }
         public decimal? Valortotal { get; set; }
         public decimal? Desconto { get; set; }
